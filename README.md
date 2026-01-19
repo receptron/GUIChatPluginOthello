@@ -13,7 +13,7 @@ Othello/Reversi game plugin for GUI Chat applications. Play Othello against an A
 ## Installation
 
 ```bash
-npm install @gui-chat-plugin/othello
+yarn add @gui-chat-plugin/othello
 ```
 
 ## Usage
@@ -21,11 +21,16 @@ npm install @gui-chat-plugin/othello
 ### Vue Integration
 
 ```typescript
-import { plugin } from "@gui-chat-plugin/othello/vue";
-import "@gui-chat-plugin/othello/style.css";
+// In src/tools/index.ts
+import OthelloPlugin from "@gui-chat-plugin/othello/vue";
 
-// Register the plugin with your GUI Chat application
-registerPlugin(plugin);
+const pluginList = [
+  // ... other plugins
+  OthelloPlugin,
+];
+
+// In src/main.ts
+import "@gui-chat-plugin/othello/style.css";
 ```
 
 ### Core-only Usage
