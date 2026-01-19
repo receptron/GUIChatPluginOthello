@@ -1,5 +1,7 @@
 # @gui-chat-plugin/othello
 
+[![npm version](https://badge.fury.io/js/%40gui-chat-plugin%2Fothello.svg)](https://www.npmjs.com/package/@gui-chat-plugin/othello)
+
 Othello/Reversi game plugin for GUI Chat applications. Play Othello against an AI assistant or let it guide you through the game.
 
 ## Features
@@ -100,6 +102,14 @@ yarn build
 # Lint
 yarn lint
 ```
+
+## Test Prompts
+
+Try these prompts to test the plugin:
+
+1. "Let's play Othello! I want to go first"
+2. "Start a new Othello game, you go first"
+3. "Place my piece at position D3"
 
 ## License
 
