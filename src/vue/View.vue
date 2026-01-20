@@ -40,12 +40,12 @@
 
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
-import type { ToolResult } from "gui-chat-protocol/vue";
-import type { OthelloState } from "../core/types";
+import type { ToolResult, SendTextMessageOptions } from "gui-chat-protocol/vue";
+import type { OthelloState, OthelloClickData } from "../core/types";
 
 const props = defineProps<{
   selectedResult: ToolResult<never, OthelloState> | null;
-  sendTextMessage: (text?: string) => void;
+  sendTextMessage: (text?: string, options?: SendTextMessageOptions) => void;
 }>();
 
 const gameState = ref<OthelloState | null>(null);
@@ -139,8 +139,15 @@ function handleCellClick(index: number): void {
   const columnLetter = String.fromCharCode(65 + cell.col);
   const rowNumber = cell.row + 1;
 
+  const clickData: OthelloClickData = {
+    row: cell.row,
+    col: cell.col,
+    currentState: gameState.value,
+  };
+
   props.sendTextMessage(
     `I want to play at ${columnLetter}${rowNumber}, which is column=${cell.col}, row=${cell.row} `,
+    { data: clickData },
   );
 }
 
