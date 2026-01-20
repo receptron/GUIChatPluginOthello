@@ -56,3 +56,12 @@ export interface OthelloState {
     | { type: "pass" };
   error?: string;
 }
+
+/**
+ * Data passed from handleCellClick for testing/debugging
+ */
+export interface OthelloClickData {
+  row: number;
+  col: number;
+  currentState: OthelloState;
+}

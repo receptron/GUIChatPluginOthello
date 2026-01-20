@@ -44,8 +44,18 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { plugin, executeOthello } from "../src/vue";
-import type { ToolResult, ToolSample, ToolPlugin } from "gui-chat-protocol/vue";
-import type { OthelloArgs, OthelloState } from "../src/core/types";
+import type {
+  ToolResult,
+  ToolSample,
+  ToolPlugin,
+  SendTextMessageOptions,
+} from "gui-chat-protocol/vue";
+import type {
+  OthelloArgs,
+  OthelloState,
+  OthelloClickData,
+} from "../src/core/types";
+import { playOthello } from "../src/core/logic";
 
 const currentPlugin = plugin as unknown as ToolPlugin;
 
@@ -73,8 +83,89 @@ const executeSample = async (sample: ToolSample) => {
   };
 };
 
-const handleSendMessage = (text?: string) => {
+const handleSendMessage = (text?: string, options?: SendTextMessageOptions) => {
   lastMessage.value = text || "";
-  console.log("Send message:", text);
+  console.log("Send message:", text, options);
+
+  // If data is provided (from handleCellClick), process the move
+  if (options?.data) {
+    const clickData = options.data as OthelloClickData;
+    processUserMove(clickData);
+  }
+};
+
+/**
+ * Process user's move and then make computer's move
+ */
+const processUserMove = (clickData: OthelloClickData) => {
+  const { row, col, currentState } = clickData;
+
+  // Apply user's move
+  let newState = playOthello({
+    action: "move",
+    row,
+    col,
+    board: currentState.board,
+    currentSide: currentState.currentSide,
+    playerNames: currentState.playerNames,
+  });
+
+  // Update result with user's move
+  result.value = {
+    ...result.value,
+    jsonData: newState,
+    uuid: `demo-${Date.now()}`,
+  };
+
+  // If it's now computer's turn and game is not over, make computer move
+  if (
+    !newState.isTerminal &&
+    newState.playerNames[newState.currentSide] === "computer"
+  ) {
+    // Small delay for visual feedback
+    setTimeout(() => {
+      makeComputerMove(newState);
+    }, 500);
+  }
+};
+
+/**
+ * Make a simple computer move (picks random legal move)
+ */
+const makeComputerMove = (state: OthelloState) => {
+  if (state.legalMoves.length === 0) {
+    // Computer must pass
+    const newState = playOthello({
+      action: "pass",
+      board: state.board,
+      currentSide: state.currentSide,
+      playerNames: state.playerNames,
+    });
+    result.value = {
+      ...result.value,
+      jsonData: newState,
+      uuid: `demo-${Date.now()}`,
+    };
+    return;
+  }
+
+  // Pick a random legal move
+  const randomIndex = Math.floor(Math.random() * state.legalMoves.length);
+  const move = state.legalMoves[randomIndex];
+
+  const newState = playOthello({
+    action: "move",
+    row: move.row,
+    col: move.col,
+    board: state.board,
+    currentSide: state.currentSide,
+    playerNames: state.playerNames,
+  });
+
+  result.value = {
+    ...result.value,
+    jsonData: newState,
+    uuid: `demo-${Date.now()}`,
+  };
 };
 </script>
