@@ -1,6 +1,6 @@
 {
   "name": "@gui-chat-plugin/othello",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Othello/Reversi game plugin for GUI Chat",
   "type": "module",
   "main": "./dist/index.cjs",
