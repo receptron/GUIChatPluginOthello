@@ -10,10 +10,7 @@ import { playOthello } from "./logic";
 export { TOOL_NAME, TOOL_DEFINITION, SYSTEM_PROMPT } from "./definition";
 export { playOthello } from "./logic";
 
-export const executeOthello = async (
-  _context: ToolContext,
-  args: OthelloArgs,
-): Promise<ToolResult<never, OthelloState>> => {
+export const executeOthello = async (_context: ToolContext, args: OthelloArgs): Promise<ToolResult<never, OthelloState>> => {
   try {
     let command: Command;
 
@@ -31,16 +28,8 @@ export const executeOthello = async (
         playerNames: { B: blackPlayer, W: whitePlayer },
       };
     } else if (args.action === "move") {
-      if (
-        typeof args.row !== "number" ||
-        typeof args.col !== "number" ||
-        !args.board ||
-        !args.currentSide ||
-        !args.playerNames
-      ) {
-        throw new Error(
-          "Move action requires row, col, board, currentSide, and playerNames parameters",
-        );
+      if (typeof args.row !== "number" || typeof args.col !== "number" || !args.board || !args.currentSide || !args.playerNames) {
+        throw new Error("Move action requires row, col, board, currentSide, and playerNames parameters");
       }
       command = {
         action: "move",
@@ -52,9 +41,7 @@ export const executeOthello = async (
       };
     } else if (args.action === "pass") {
       if (!args.board || !args.currentSide || !args.playerNames) {
-        throw new Error(
-          "Pass action requires board, currentSide, and playerNames parameters",
-        );
+        throw new Error("Pass action requires board, currentSide, and playerNames parameters");
       }
       command = {
         action: "pass",
@@ -70,11 +57,8 @@ export const executeOthello = async (
 
     // Handle invalid move
     if (state.error) {
-      const isComputerTurn =
-        state.playerNames[state.currentSide] === "computer";
-      const legalMovesStr = state.legalMoves
-        .map((m) => `(${m.row}, ${m.col})`)
-        .join(", ");
+      const isComputerTurn = state.playerNames[state.currentSide] === "computer";
+      const legalMovesStr = state.legalMoves.map((m) => `(${m.row}, ${m.col})`).join(", ");
 
       const instructions = isComputerTurn
         ? `Invalid move attempted. You must make a valid move. Legal moves are: ${legalMovesStr}. Choose one of these moves.`
@@ -123,8 +107,7 @@ export const executeOthello = async (
     console.error("ERR: exception\n Othello game error", error);
     return {
       message: `Othello game error: ${error instanceof Error ? error.message : "Unknown error"}`,
-      instructions:
-        "Acknowledge that there was an error with the Othello game and suggest trying again.",
+      instructions: "Acknowledge that there was an error with the Othello game and suggest trying again.",
     };
   }
 };
