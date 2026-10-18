@@ -1,6 +1,7 @@
 # @gui-chat-plugin/othello
 
 [![npm version](https://badge.fury.io/js/%40gui-chat-plugin%2Fothello.svg)](https://www.npmjs.com/package/@gui-chat-plugin/othello)
+[![scoria](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/receptron/GUIChatPluginOthello/badges/scoria.json)](https://github.com/receptron/GUIChatPluginOthello/actions/workflows/scoria.yml)
 
 Othello/Reversi game plugin for GUI Chat applications. Play Othello against an AI assistant or let it guide you through the game.
 
