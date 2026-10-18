@@ -2,14 +2,10 @@
   <div class="w-full h-full flex flex-col items-center justify-center p-4">
     <div v-if="gameState" class="flex flex-col items-center">
       <!-- Turn indicator -->
-      <div class="text-white text-lg font-bold mb-4 text-center">
-        Current Turn: {{ currentPlayerName }} ({{ currentColorName }})
-      </div>
+      <div class="text-white text-lg font-bold mb-4 text-center">Current Turn: {{ currentPlayerName }} ({{ currentColorName }})</div>
 
       <!-- Game board -->
-      <div
-        class="grid grid-cols-8 gap-0.5 p-4 bg-green-800 rounded-lg border-2 border-green-900"
-      >
+      <div class="grid grid-cols-8 gap-0.5 p-4 bg-green-800 rounded-lg border-2 border-green-900">
         <div
           v-for="(cell, index) in flatBoard"
           :key="index"
@@ -19,17 +15,10 @@
           @mouseleave="handleCellHover(index, false)"
         >
           <!-- Piece -->
-          <div
-            v-if="cell.piece"
-            :class="getPieceClass(cell.piece)"
-            class="w-10 h-10 rounded-full border-2 border-gray-600"
-          ></div>
+          <div v-if="cell.piece" :class="getPieceClass(cell.piece)" class="w-10 h-10 rounded-full border-2 border-gray-600"></div>
 
           <!-- Legal move indicator -->
-          <div
-            v-else-if="cell.isLegalMove && !isComputerTurn"
-            class="w-10 h-10 flex items-center justify-center text-gray-300 text-sm font-bold"
-          >
+          <div v-else-if="cell.isLegalMove && !isComputerTurn" class="w-10 h-10 flex items-center justify-center text-gray-300 text-sm font-bold">
             {{ cell.label }}
           </div>
         </div>
@@ -73,10 +62,7 @@ const currentColorName = computed(() => {
 });
 
 const isComputerTurn = computed(() => {
-  return (
-    gameState.value?.playerNames &&
-    gameState.value.playerNames[gameState.value.currentSide] === "computer"
-  );
+  return gameState.value?.playerNames && gameState.value.playerNames[gameState.value.currentSide] === "computer";
 });
 
 interface FlatBoardCell {
@@ -94,9 +80,7 @@ const flatBoard = computed((): FlatBoardCell[] => {
   for (let row = 0; row < 8; row++) {
     for (let col = 0; col < 8; col++) {
       const cellValue = gameState.value.board[row][col];
-      const isLegalMove = gameState.value.legalMoves?.some(
-        (move) => move.row === row && move.col === col,
-      );
+      const isLegalMove = gameState.value.legalMoves?.some((move) => move.row === row && move.col === col);
 
       board.push({
         row,
@@ -111,16 +95,9 @@ const flatBoard = computed((): FlatBoardCell[] => {
 });
 
 function getCellClass(cell: FlatBoardCell, index: number) {
-  const baseClasses =
-    "w-12 h-12 flex items-center justify-center border border-green-900 bg-green-700";
-  const hoverClasses =
-    cell.isLegalMove && !isComputerTurn.value && hoveredCell.value === index
-      ? "bg-green-600"
-      : "";
-  const cursorClasses =
-    cell.isLegalMove && !isComputerTurn.value && !gameState.value?.isTerminal
-      ? "cursor-pointer hover:bg-green-600"
-      : "cursor-default";
+  const baseClasses = "w-12 h-12 flex items-center justify-center border border-green-900 bg-green-700";
+  const hoverClasses = cell.isLegalMove && !isComputerTurn.value && hoveredCell.value === index ? "bg-green-600" : "";
+  const cursorClasses = cell.isLegalMove && !isComputerTurn.value && !gameState.value?.isTerminal ? "cursor-pointer hover:bg-green-600" : "cursor-default";
 
   return `${baseClasses} ${hoverClasses} ${cursorClasses}`;
 }
@@ -130,8 +107,7 @@ function getPieceClass(piece: string) {
 }
 
 function handleCellClick(index: number): void {
-  if (!gameState.value || gameState.value.isTerminal || isComputerTurn.value)
-    return;
+  if (!gameState.value || gameState.value.isTerminal || isComputerTurn.value) return;
 
   const cell = flatBoard.value[index];
   if (!cell.isLegalMove) return;
@@ -145,15 +121,11 @@ function handleCellClick(index: number): void {
     currentState: gameState.value,
   };
 
-  props.sendTextMessage(
-    `I want to play at ${columnLetter}${rowNumber}, which is column=${cell.col}, row=${cell.row} `,
-    { data: clickData },
-  );
+  props.sendTextMessage(`I want to play at ${columnLetter}${rowNumber}, which is column=${cell.col}, row=${cell.row} `, { data: clickData });
 }
 
 function handleCellHover(index: number, isEntering: boolean): void {
-  if (!gameState.value || gameState.value.isTerminal || isComputerTurn.value)
-    return;
+  if (!gameState.value || gameState.value.isTerminal || isComputerTurn.value) return;
 
   const cell = flatBoard.value[index];
   if (!cell.isLegalMove) return;

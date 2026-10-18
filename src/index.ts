@@ -15,13 +15,6 @@ export type {
   MoveCommand,
 } from "./core/types";
 
-export {
-  TOOL_NAME,
-  TOOL_DEFINITION,
-  SYSTEM_PROMPT,
-  executeOthello,
-  pluginCore,
-  playOthello,
-} from "./core/plugin";
+export { TOOL_NAME, TOOL_DEFINITION, SYSTEM_PROMPT, executeOthello, pluginCore, playOthello } from "./core/plugin";
 
 export { samples } from "./core/samples";

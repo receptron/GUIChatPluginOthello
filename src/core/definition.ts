@@ -9,28 +9,24 @@ export const TOOL_NAME = "playOthello";
 export const TOOL_DEFINITION: ToolDefinition = {
   type: "function",
   name: TOOL_NAME,
-  description:
-    "Play Othello/Reversi game with the user. You can start a new game, make moves, or pass turns.",
+  description: "Play Othello/Reversi game with the user. You can start a new game, make moves, or pass turns.",
   parameters: {
     type: "object",
     properties: {
       action: {
         type: "string",
         enum: ["new_game", "move", "pass"],
-        description:
-          "The action to perform: start a new game, make a move, or pass the turn",
+        description: "The action to perform: start a new game, make a move, or pass the turn",
       },
       col: {
         type: "number",
-        description:
-          "Column position for the move (0-7, required for 'move' action). The user will tell you the column by specifying A to H",
+        description: "Column position for the move (0-7, required for 'move' action). The user will tell you the column by specifying A to H",
         minimum: 0,
         maximum: 7,
       },
       row: {
         type: "number",
-        description:
-          "Row position for the move (0-7, required for 'move' action). The user will tell you the row by specifying 1 to 8",
+        description: "Row position for the move (0-7, required for 'move' action). The user will tell you the row by specifying 1 to 8",
         minimum: 0,
         maximum: 7,
       },
@@ -49,13 +45,11 @@ export const TOOL_DEFINITION: ToolDefinition = {
       currentSide: {
         type: "string",
         enum: ["B", "W"],
-        description:
-          "Current player's side (required for 'move' and 'pass' actions)",
+        description: "Current player's side (required for 'move' and 'pass' actions)",
       },
       playerNames: {
         type: "object",
-        description:
-          "Player assignments (required for 'move' and 'pass' actions)",
+        description: "Player assignments (required for 'move' and 'pass' actions)",
         properties: {
           B: {
             type: "string",
@@ -71,8 +65,7 @@ export const TOOL_DEFINITION: ToolDefinition = {
       firstPlayer: {
         type: "string",
         enum: ["user", "computer"],
-        description:
-          "Optional: Which player should play as Black (goes first) for 'new_game' action. If not specified, will be chosen randomly.",
+        description: "Optional: Which player should play as Black (goes first) for 'new_game' action. If not specified, will be chosen randomly.",
       },
     },
     required: ["action"],

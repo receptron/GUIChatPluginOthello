@@ -50,10 +50,7 @@ export interface OthelloState {
   counts: { B: number; W: number; empty: number };
   isTerminal: boolean;
   winner: Side | "draw" | null; // null until terminal
-  lastAction:
-    | { type: "new_game" }
-    | { type: "move"; row: number; col: number; flipped: number }
-    | { type: "pass" };
+  lastAction: { type: "new_game" } | { type: "move"; row: number; col: number; flipped: number } | { type: "pass" };
   error?: string;
 }
 

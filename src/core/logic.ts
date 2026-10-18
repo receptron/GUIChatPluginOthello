@@ -2,13 +2,7 @@
  * Othello Plugin - Game Logic
  */
 
-import type {
-  Cell,
-  Side,
-  OthelloBoard,
-  Command,
-  OthelloState,
-} from "./types";
+import type { Cell, Side, OthelloBoard, Command, OthelloState } from "./types";
 
 const DIRECTIONS = [
   [-1, -1],
@@ -51,14 +45,7 @@ function getOpponent(side: Side): Side {
   return side === "B" ? "W" : "B";
 }
 
-function checkDirection(
-  board: OthelloBoard,
-  row: number,
-  col: number,
-  dRow: number,
-  dCol: number,
-  side: Side,
-): { row: number; col: number }[] {
+function checkDirection(board: OthelloBoard, row: number, col: number, dRow: number, dCol: number, side: Side): { row: number; col: number }[] {
   const opponent = getOpponent(side);
   const flipped: { row: number; col: number }[] = [];
 
@@ -80,12 +67,7 @@ function checkDirection(
   return [];
 }
 
-function getFlippedPieces(
-  board: OthelloBoard,
-  row: number,
-  col: number,
-  side: Side,
-): { row: number; col: number }[] {
+function getFlippedPieces(board: OthelloBoard, row: number, col: number, side: Side): { row: number; col: number }[] {
   if (board[row][col] !== ".") {
     return [];
   }
@@ -100,19 +82,11 @@ function getFlippedPieces(
   return allFlipped;
 }
 
-function isLegalMove(
-  board: OthelloBoard,
-  row: number,
-  col: number,
-  side: Side,
-): boolean {
+function isLegalMove(board: OthelloBoard, row: number, col: number, side: Side): boolean {
   return getFlippedPieces(board, row, col, side).length > 0;
 }
 
-function getLegalMoves(
-  board: OthelloBoard,
-  side: Side,
-): { row: number; col: number }[] {
+function getLegalMoves(board: OthelloBoard, side: Side): { row: number; col: number }[] {
   const moves: { row: number; col: number }[] = [];
 
   for (let row = 0; row < 8; row++) {
@@ -126,12 +100,7 @@ function getLegalMoves(
   return moves;
 }
 
-function makeMove(
-  board: OthelloBoard,
-  row: number,
-  col: number,
-  side: Side,
-): { newBoard: OthelloBoard; flippedCount: number } {
+function makeMove(board: OthelloBoard, row: number, col: number, side: Side): { newBoard: OthelloBoard; flippedCount: number } {
   const newBoard = copyBoard(board);
   const flipped = getFlippedPieces(board, row, col, side);
 
@@ -167,11 +136,7 @@ function countPieces(board: OthelloBoard): {
   return { B, W, empty };
 }
 
-function determineWinner(counts: {
-  B: number;
-  W: number;
-  empty: number;
-}): Side | "draw" | null {
+function determineWinner(counts: { B: number; W: number; empty: number }): Side | "draw" | null {
   if (counts.empty > 0) return null; // Game not over
 
   if (counts.B > counts.W) return "B";
@@ -247,9 +212,7 @@ export function playOthello(cmd: Command): OthelloState {
   const counts = countPieces(newBoard);
 
   // Check if game is terminal
-  const isTerminal =
-    legalMoves.length === 0 &&
-    getLegalMoves(newBoard, currentSide).length === 0;
+  const isTerminal = legalMoves.length === 0 && getLegalMoves(newBoard, currentSide).length === 0;
   const winner = isTerminal ? determineWinner(counts) : null;
 
   return {
