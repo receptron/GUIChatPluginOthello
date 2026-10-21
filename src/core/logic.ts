@@ -3,6 +3,9 @@
  */
 
 import type { Cell, Side, OthelloBoard, Command, OthelloState } from "./types";
+import { isOnBoard } from "./position";
+
+const BOARD_SIZE = 8;
 
 const DIRECTIONS = [
   [-1, -1],
@@ -38,7 +41,7 @@ function copyBoard(board: OthelloBoard): OthelloBoard {
 }
 
 function isInBounds(row: number, col: number): boolean {
-  return row >= 0 && row < 8 && col >= 0 && col < 8;
+  return isOnBoard(row, col, BOARD_SIZE);
 }
 
 function getOpponent(side: Side): Side {
@@ -68,7 +71,7 @@ function checkDirection(board: OthelloBoard, row: number, col: number, dRow: num
 }
 
 function getFlippedPieces(board: OthelloBoard, row: number, col: number, side: Side): { row: number; col: number }[] {
-  if (board[row][col] !== ".") {
+  if (!isInBounds(row, col) || board[row][col] !== ".") {
     return [];
   }
 
